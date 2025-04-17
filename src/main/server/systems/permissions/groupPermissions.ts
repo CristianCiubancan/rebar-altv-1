@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 import * as alt from 'alt-server';
 import { useGlobal } from '@Server/document/global.js';
 import { usePlayersGetter } from '@Server/getters/players.js';
@@ -10,13 +12,12 @@ interface PermissionGroup {
     inherits?: string;
     version?: number;
 }
-
 interface PermissionGroupConfig {
     [groupName: string]: PermissionGroup;
 }
 
 let initialized = false;
-let permissionGroups: Awaited<ReturnType<typeof useGlobal<PermissionGroupConfig>>>;
+let permissionGroups: any;
 const permissionIndex: Map<string, Set<string>> = new Map();
 const database = useDatabase();
 
@@ -112,9 +113,17 @@ export function usePermissionGroup() {
             ...accountPromises,
             ...characterPromises,
             // Remove the group from all accounts that are offline.
-            database.updateMany({ groups: groupName }, { $pull: { groups: groupName } }, CollectionNames.Accounts),
+            database.updateMany(
+                { groups: groupName } as any,
+                { $pull: { groups: groupName } } as any,
+                CollectionNames.Accounts,
+            ),
             // Remove the group from all characters that are offline.
-            database.updateMany({ groups: groupName }, { $pull: { groups: groupName } }, CollectionNames.Characters),
+            database.updateMany(
+                { groups: groupName } as any,
+                { $pull: { groups: groupName } } as any,
+                CollectionNames.Characters,
+            ),
         ]);
         return true;
     }

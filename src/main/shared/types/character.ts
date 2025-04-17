@@ -1,7 +1,7 @@
 import * as alt from 'alt-shared';
 import { Appearance } from './appearance.js';
 import { ClothingComponent } from './clothingComponent.js';
-import {GroupsDocumentMixin, PermissionsDocumentMixin} from "@Shared/types/index.js";
+import { GroupsDocumentMixin, PermissionsDocumentMixin } from '@Shared/types/index.js';
 
 export interface BaseCharacter {
     /**
@@ -63,7 +63,7 @@ export interface Character extends BaseCharacter, PermissionsDocumentMixin, Grou
      * @type {*}
      *
      */
-    _id?: string;
+    _id: string;
 
     /**
      * An easy to use identifier for the character

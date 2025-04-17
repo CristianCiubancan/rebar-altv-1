@@ -61,3 +61,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+athena_cache
+rebar-altv-main

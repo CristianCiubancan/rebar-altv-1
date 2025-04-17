@@ -6,7 +6,7 @@ export interface RebarBaseItem {
      *
      * @type {keyof RebarItems}
      */
-    id: keyof RebarItems;
+    id: string;
 
     /**
      * The unique name of the item
@@ -46,6 +46,9 @@ export interface RebarBaseItem {
      * @type {string}
      */
     icon: string;
+}
+export interface RebarItems {
+    [key: string]: RebarBaseItem;
 }
 
 export type Item = {

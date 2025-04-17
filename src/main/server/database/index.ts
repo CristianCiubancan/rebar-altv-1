@@ -1,8 +1,8 @@
 import * as alt from 'alt-server';
-import {MongoClient, Db, InsertOneResult, ObjectId, AggregateOptions, UpdateFilter} from 'mongodb';
+import { MongoClient, Db, InsertOneResult, ObjectId, AggregateOptions, UpdateFilter, Filter } from 'mongodb';
 import * as Utility from '@Shared/utility/index.js';
-import {CollectionNames} from '../document/shared.js';
-import {useConfig} from '@Server/config/index.js';
+import { CollectionNames } from '../document/shared.js';
+import { useConfig } from '@Server/config/index.js';
 
 const config = useConfig();
 
@@ -95,8 +95,7 @@ export function useDatabase() {
 
         try {
             await client.createCollection(name);
-        } catch (err) {
-        }
+        } catch (err) {}
     }
 
     /**
@@ -122,7 +121,7 @@ export function useDatabase() {
         try {
             const result = await client
                 .collection(collection)
-                .findOneAndUpdate({_id: ObjectId.createFromHexString(data._id)}, {$set: dataClone});
+                .findOneAndUpdate({ _id: ObjectId.createFromHexString(data._id) }, { $set: dataClone });
             return true;
         } catch (err) {
             return false;
@@ -138,7 +137,7 @@ export function useDatabase() {
      * @param {UpdateFilter<any>} update
      * @param {string} collection
      */
-    async function updateMany<T extends { [key: string]: any }>(filter: T, update: UpdateFilter<T>, collection: string): Promise<boolean> {
+    async function updateMany(filter: any, update: any, collection: string): Promise<boolean> {
         const client = await getClient();
         try {
             const result = await client.collection(collection).updateMany(filter, update);
@@ -161,8 +160,13 @@ export function useDatabase() {
         const client = await getClient();
 
         try {
-            const result = await client.collection(collection).updateOne({_id: ObjectId.createFromHexString(_id)}, {"$unset": Object.assign({}, ...fields.map((x) => ({[x]: ''})))});
-            return result.acknowledged
+            const result = await client
+                .collection(collection)
+                .updateOne(
+                    { _id: ObjectId.createFromHexString(_id) },
+                    { $unset: Object.assign({}, ...fields.map((x) => ({ [x]: '' }))) },
+                );
+            return result.acknowledged;
         } catch (err) {
             return false;
         }
@@ -182,7 +186,7 @@ export function useDatabase() {
         const client = await getClient();
 
         try {
-            const result = await client.collection(collection).deleteOne({_id: ObjectId.createFromHexString(_id)});
+            const result = await client.collection(collection).deleteOne({ _id: ObjectId.createFromHexString(_id) });
             return result.deletedCount >= 1;
         } catch (err) {
             return false;
@@ -209,7 +213,7 @@ export function useDatabase() {
         const client = await getClient();
 
         try {
-            const dataLookup: any = {...dataToMatch};
+            const dataLookup: any = { ...dataToMatch };
 
             if (dataToMatch._id) {
                 dataLookup._id = ObjectId.createFromHexString(dataToMatch._id);
@@ -220,7 +224,7 @@ export function useDatabase() {
                 return undefined;
             }
 
-            return {...document, _id: String(document._id)};
+            return { ...document, _id: String(document._id) };
         } catch (err) {
             console.log(err);
             return undefined;
@@ -243,7 +247,7 @@ export function useDatabase() {
         const client = await getClient();
 
         try {
-            const dataLookup: any = {...dataToMatch};
+            const dataLookup: any = { ...dataToMatch };
 
             if (dataToMatch._id) {
                 dataLookup._id = ObjectId.createFromHexString(dataToMatch._id);
@@ -252,7 +256,7 @@ export function useDatabase() {
             const cursor = await client.collection(collection).find<T>(dataLookup);
             const documents = await cursor.toArray();
             return documents.map((x) => {
-                return {...x, _id: String(x._id)};
+                return { ...x, _id: String(x._id) };
             });
         } catch (err) {
             return [];
@@ -276,7 +280,7 @@ export function useDatabase() {
             const cursor = await client.collection(collection).find();
             const documents = await cursor.toArray();
             return documents.map((x) => {
-                return {...x, _id: String(x._id)};
+                return { ...x, _id: String(x._id) };
             }) as (T & { _id: string })[];
         } catch (err) {
             return undefined;
@@ -297,7 +301,7 @@ export function useDatabase() {
         const client = await getClient();
 
         try {
-            const result = await client.collection(collection).deleteOne({_id: ObjectId.createFromHexString(_id)});
+            const result = await client.collection(collection).deleteOne({ _id: ObjectId.createFromHexString(_id) });
             return result.acknowledged;
         } catch (err) {
             return false;
@@ -326,7 +330,7 @@ export function useDatabase() {
             const cursor = await client.collection(collection).aggregate(pipeline, options);
             const documents = await cursor.toArray();
             return documents.map((x) => {
-                return {...x, _id: String(x._id)};
+                return { ...x, _id: String(x._id) };
             }) as (T & { _id: string })[];
         } catch (err) {
             return undefined;

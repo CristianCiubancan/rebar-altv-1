@@ -1,7 +1,9 @@
 import * as alt from 'alt-server';
 import { useServiceRegister } from './index.js';
 import { Item, RebarBaseItem } from '@Shared/types/items.js';
-
+export interface RebarItems {
+    [key: string]: RebarBaseItem;
+}
 export interface ItemService {
     /**
      * Add an item to the given entity with a given quantity based on a common id

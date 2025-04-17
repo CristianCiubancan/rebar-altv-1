@@ -6,4 +6,4 @@ async function reloadWebview() {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 }
 
-reloadCore();
+reloadWebview();

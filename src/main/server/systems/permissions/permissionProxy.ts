@@ -4,7 +4,7 @@ import { usePermissionGroup } from '@Server/systems/permissions/groupPermissions
 import { PermissionsDocumentMixin, GroupsDocumentMixin } from '@Shared/types/index.js';
 
 type DocumentGetterResult<T> = T | undefined;
-type Document = PermissionsDocumentMixin & GroupsDocumentMixin;
+type Document = PermissionsDocumentMixin & GroupsDocumentMixin & { _id: string };
 type DocumentGetter<T extends Document> = () => DocumentGetterResult<T>;
 type DocumentBulkSetter<T extends Document> = (fields: Partial<T>) => Promise<any>;
 
