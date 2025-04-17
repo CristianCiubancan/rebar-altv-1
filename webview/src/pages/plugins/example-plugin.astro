@@ -1,0 +1,11 @@
+---
+import AppLayout from '../../components/AppLayout.tsx';
+import Draggable from '../../components/Draggable.tsx';
+import Page from '@Plugins/example-plugin/Page.tsx';
+export const prerender = true;
+---
+<AppLayout>
+  <Draggable>
+    <Page client:load />
+  </Draggable>
+</AppLayout>

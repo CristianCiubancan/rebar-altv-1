@@ -47,7 +47,7 @@ export function useAccount(player: alt.Player) {
             return undefined;
         }
 
-        return <Account>player.getMeta(sessionKey);
+        return player.getMeta(sessionKey) as Account;
     }
 
     /**

@@ -1,7 +1,7 @@
 import * as alt from 'alt-server';
 import * as Utility from '@Shared/utility/index.js';
-import {WeaponPickup} from '@Shared/types/index.js';
-import {WeaponPickups} from '@Shared/data/pickups.js';
+import { WeaponPickup } from '@Shared/types/index.js';
+import { WeaponPickups } from '@Shared/data/pickups.js';
 
 type PlayerCallback = (player: alt.Player, pickup: WeaponPickup, destroy: Function) => void;
 type InternalPickup = { colshape: alt.Colshape; entity: alt.Object; invoke: (player: alt.Player) => void };
@@ -80,7 +80,7 @@ function onEnter(colshape: alt.Colshape, entity: alt.Entity) {
         return;
     }
 
-    const pickup = bindings[<string>colshape.getMeta(sessionKey)] as InternalPickup;
+    const pickup = bindings[colshape.getMeta(sessionKey) as string] as InternalPickup;
     if (!pickup.invoke) {
         return;
     }

@@ -18,7 +18,7 @@ const foldersToClean = [
 const initialCommands = [
     `node ./scripts/generatePluginPages.cjs`,
     `pnpm -C webview run build`,
-    `npx sucrase ./src -d ./resources/core --exclude-dirs ./src/scratchpad --transforms typescript -q`,
+    `npx sucrase ./src -d ./resources/core --exclude-dirs ./src/scratchpad --transforms typescript,jsx -q`,
     `node ./scripts/env.js`,
     `node ./scripts/copyFiles.js`,
 ];

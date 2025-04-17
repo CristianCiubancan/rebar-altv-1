@@ -50,7 +50,7 @@ export function useCharacter(player: alt.Player) {
             return undefined;
         }
 
-        return <Character>player.getMeta(sessionKey);
+        return player.getMeta(sessionKey) as Character;
     }
 
     /**

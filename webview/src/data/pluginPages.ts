@@ -1,1 +1,1 @@
-export const pluginPages = [];
+export const pluginPages = ["example-plugin"];

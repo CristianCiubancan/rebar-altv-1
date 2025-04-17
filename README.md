@@ -1,97 +1,108 @@
-# Rebar for alt:V
+# Astro‑React Rebar
 
-Rebar is a TypeScript framework for [alt:V](https://altv.mp) that prioritizes plugins, translations. Rebar was inspired by Athena and meant to take Athena's best features and create a framework that gives developers a quick starting point.
+This project is an Astro + React re‑implementation of the Rebar framework for alt:V. It preserves the original plugin architecture for server, client, RMLUI and webview pages.
 
-Plugins for Rebar allow developers to drag & drop repositories into their server framework.
+---
 
-### [Read our Docs!](https://rebarv.com)
+## Project Structure
 
-### [Join our Discord!](https://discord.gg/63rrbadsR7)
+├── **src/**  
+│ └── **plugins/**  
+│ └── _your‑plugin_/  
+│ ├── **server/** index.ts (Alt:V server entry)  
+│ ├── **client/** index.ts (Alt:V client entry)  
+│ ├── **rmlui/** index.html or _.rml (in‑game UI)  
+│ └── Page.tsx (React component for webview)  
+├── **resources/**  
+│ └── **webview/** (built Astro site output)  
+├── **scripts/**  
+│ ├── buildPluginImports.js (collects server & client imports)  
+│ ├── generatePluginPages.cjs (builds Astro pages + pluginPages.ts)  
+│ └── webview.js (invokes page generator)  
+├── **webview/** (Astro project)  
+│ ├── astro.config.mjs (aliases `@Plugins`, `@Client`, `@Server`…)  
+│ ├── src/components (AppLayout, Draggable, etc.)  
+│ ├── src/pages/plugins/_.astro (generated per‑plugin)  
+│ └── src/data/pluginPages.ts (exports plugin list)  
+└── package.json, nodemon, config & build scripts
 
-## Features
+---
 
--   TypeScript
--   Plugins
--   Locale / Translation Support
--   Path Aliasing
--   Transpiling
--   Reload
--   Webview Overlays, Persistent Pages, and Single Pages
--   Vue 3
--   TailwindCSS
+## Plugin Workflow
 
-## Where to find Plugins?
+1. **Source**
 
-If you're looking for plugins for Rebar, check out these two websites.
+    - Place your plugin under `src/plugins/<plugin-name>`.
+    - Create subfolders `server`, `client`, optionally `rmlui`.
+    - Provide a `Page.tsx` React component at the plugin root.
 
--   https://github.com/Stuyk/awesome-rebar
--   https://forge.plebmasters.de/hub/Script
+2. **Server & Client Bundling**
 
-## Requirements & Usage
+    - `scripts/buildPluginImports.js` scans `src/plugins/*` and appends imports to  
+      `resources/core/main/server/plugins.js` and `resources/core/main/client/plugins.js`.
+    - Disabled if a `.disable` file exists or folder name prefixed with `!`.
 
-See [Install Instructions](https://rebarv.com/install/) for quick installation
+3. **Webview Pages**
 
-## Structure
+    - `scripts/generatePluginPages.cjs` lists plugin directories and generates:
+        - A `.astro` page in `webview/src/pages/plugins/<plugin>.astro`, importing your `Page.tsx`.
+        - Updates `webview/src/data/pluginPages.ts` with an array of plugin names.
+    - `scripts/webview.js` invokes the generator before running Astro.
 
-A folder structure that is simple to read, and simple to write.
+4. **Aliases & Build**
 
-```
-├───main
-│   ├───client
-│   ├───server
-│   ├───shared
-│   └───translate
-└───plugins
-    └───your-plugin
-        ├───client
-        │   └───index.ts
-        ├───server
-        │   └───index.ts
-        ├───translate
-        │   └───index.ts
-        └───webview
-            └───MyCustomPage.vue
-```
+    - In `webview/astro.config.mjs`, `@Plugins` points to `../src/plugins`,  
+      `@Client`, `@Server`, `@Shared` mirror runtime code.
+    - Astro builds to `resources/webview`, preserving webview assets for alt:V.
 
-## Documentation
+5. **Disable a Plugin**
+    - Create an empty file `src/plugins/<plugin>/.disable`, or prefix the folder with `!`.
 
-[https://rebarv.com](https://rebarv.com)
+---
 
-If you wish to run documentation locally, you can do the following:
+## Scripts & Commands
 
-```sh
-pnpm install retypeapp --global
-```
+-   **Development**
+    ```bash
+    pnpm run dev          # nodemon server + webview:dev
+    pnpm run webview:dev  # watch and serve Astro at localhost:3000
+    ```
+-   **Build & Run**
+    ```bash
+    pnpm run start        # compile TS, build webview, launch altv-server
+    pnpm run build:docker # compile with Docker target
+    ```
+-   **Utilities**
+    -   `pnpm run build:docker` – Docker‑packaged build
+    -   `pnpm run binaries` – altv‑pkg binaries
+    -   `pnpm run rebar:upgrade`– upgrade Rebar core
 
-```
-retype start ./docs
-```
+---
 
-## License
+## Adding a New Plugin
 
-AGPL-2.0 License with Additional Clause
+1. Create `src/plugins/my-plugin/`
+2. Add `server/index.ts` and `client/index.ts`.
+3. (Optional) Add `rmlui/index.html` or `.rml` under `rmlui/`.
+4. Export your webview UI in `Page.tsx`.
+5. Run `pnpm run webview:dev` or `pnpm run start`.
 
-The Affero General Public License (AGPL) version 2.0, as published by the Free Software Foundation, with the following modification:
+---
 
-### AGPL-2.0 License:
+## Configuration & Aliases
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the Affero General Public License as published by
-    the Free Software Foundation, either version 2 of the License, or
-    (at your option) any later version.
+-   Customize environment via `.env` and `server.toml`.
+-   Import paths in webview:
+    ```ts
+    import Page from '@Plugins/my-plugin/Page.tsx';
+    import { useRebar } from '@Server';
+    ```
+-   Shared types from `@altv/types-*` are excluded from dependency optimization.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    Affero General Public License for more details.
+---
 
-    You should have received a copy of the Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+## References
 
-### Additional Clause: Commercial Sale of Plugins
-
-    Notwithstanding any other provisions in this license, the use, distribution,
-    and commercial sale of plugins or add-ons designed to interact with or extend
-    the functionality of the software are permitted without restriction. Such plugins
-    or add-ons may be sold, distributed, or used commercially under any license,
-    including proprietary licenses, without requiring the release of source code.
+-   Original documentation: `docs/` folder in this repo.
+-   Astro config: `webview/astro.config.mjs`
+-   Plugin import scripts: `scripts/buildPluginImports.js`, `scripts/generatePluginPages.cjs`

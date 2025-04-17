@@ -22,7 +22,7 @@ pluginNames.forEach((name) => {
     const astroContent = `---
 import AppLayout from '../../components/AppLayout.tsx';
 import Draggable from '../../components/Draggable.tsx';
-import Page from '../../../src/plugins/${name}/Page.tsx';
+import Page from '@Plugins/${name}/Page.tsx';
 export const prerender = true;
 ---
 <AppLayout>

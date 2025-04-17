@@ -1,5 +1,5 @@
 import * as alt from 'alt-server';
-import {Vehicle as VehicleDocument} from '@Shared/types/index.js';
+import { Vehicle as VehicleDocument } from '@Shared/types/index.js';
 import { useDatabase } from '@Server/database/index.js';
 import { CollectionNames, KeyChangeCallback } from './shared.js';
 import { useIncrementalId } from './increment.js';
@@ -47,7 +47,7 @@ export function useVehicle(vehicle: alt.Vehicle) {
             return undefined;
         }
 
-        return <VehicleDocument>vehicle.getMeta(sessionKey);
+        return vehicle.getMeta(sessionKey) as VehicleDocument;
     }
 
     /**
