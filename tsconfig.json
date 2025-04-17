@@ -34,7 +34,7 @@
         "declaration": true,
         "emitDeclarationOnly": false
     },
-    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/scratchpad/example.pad"],
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/scratchpad/example.pad", "src/types/**/*.d.ts"],
     "exclude": [
         "resources",
         "scripts",
