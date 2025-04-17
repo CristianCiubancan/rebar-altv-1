@@ -1,9 +1,13 @@
 {
     "verbose": false,
     "ext": "ts,tsx,astro,js,cjs",
-    "watch": ["./src", "./webview", "./scripts"],
+    "watch": ["./src", "./scripts"],
     "ignore": [
-        "webview/pages/*",
+        "resources/**",
+        "webview/public/**",
+        "webview/dist/**",
+        "webview/src/pages/**",
+        "webview/src/data/**",
         "webview/vite.config.*",
         "*/package.json",
         "*.mjs",
@@ -13,5 +17,6 @@
     ],
     "events": {
         "exit": "node ./scripts/reload.js"
-    }
+    },
+    "delay": "2000"
 }

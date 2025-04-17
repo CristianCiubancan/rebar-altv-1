@@ -1,5 +1,7 @@
 # Create a Webview
 
+Rebar follows a [blank slate approach](./blank-slate-approach.md) for its webview implementation, providing minimal default UI components to give plugin developers maximum flexibility.
+
 First, make sure you've created a [plugin](../plugins/structure.md).
 
 If you are using Visual Studio Code, make sure to install [the Vue extension](https://marketplace.visualstudio.com/items?itemName=Vue.volar)

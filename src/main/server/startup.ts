@@ -47,8 +47,14 @@ async function handleStart() {
         rPlayer.notify.showNotification(`Reloaded Core Resource`);
         player.frozen = false;
 
+        // Ensure webview is properly reinitialized for the player
+        const webview = rPlayer.webview;
+
+        // Rebind character data
         const character = rPlayer.character.get();
-        alt.emit('rebar:playerCharacterBound', player, character);
+        if (character) {
+            alt.emit('rebar:playerCharacterBound', player, character);
+        }
     }
 }
 

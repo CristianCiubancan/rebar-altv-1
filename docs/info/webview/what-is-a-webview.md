@@ -4,6 +4,8 @@ order: 100
 
 # What is a Webview?
 
+Rebar follows a [blank slate approach](./blank-slate-approach.md) for its webview implementation, providing minimal default UI components to give plugin developers maximum flexibility.
+
 A Webview for this framework may also be known as a page.
 
 Pages are HTML content that can be used to render user interfaces in-game.

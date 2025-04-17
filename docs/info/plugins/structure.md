@@ -192,24 +192,24 @@ setBulk({
 
 ## webview
 
-Webview pages should always have unique names that differentiate from other plugins. Ensure you give your `vue` file a unique name.
+Each plugin that needs a webview UI should include a `Page.tsx` React component. This component will be automatically imported by the generated Astro page.
 
-```ts
-// MyPluginExample.vue
-<script lang="ts" setup>
-import '../translate/index';
+```tsx
+// Page.tsx
+import React from 'react';
 import { useTranslate } from '../../../main/shared/translate';
 
-const { t } = useTranslate('en');
+export default function Page() {
+    const { t } = useTranslate('en');
 
-console.log(`Hello from webview`);
-</script>
+    console.log(`Hello from webview`);
 
-<template>
-    <div>
-        <div class="text-red-500 text-lg">{{ t('example.hello-from-webview') }}</div>
-    </div>
-</template>
+    return (
+        <div>
+            <div className="text-lg text-red-500">{t('example.hello-from-webview')}</div>
+        </div>
+    );
+}
 ```
 
 ## Extending built-in interfaces

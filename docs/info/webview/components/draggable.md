@@ -8,15 +8,17 @@ The most important part of a draggable component is that it contains an `id`.
 
 This is what helps the draggable element decide what to send back.
 
-```html
+```tsx
 <Draggable
-    @onDrag="handleDrag"
-    @onLeftClick="handleClick"
-    @onDblClick="handleDoubleClick"
-    @onMiddleClick="handleMiddleClick"
-    @onRightClick="handleRightClick"
+    onDrag={(fromId, toId) => handleDrag(fromId, toId)}
+    onLeftClick={(id) => handleClick(id)}
+    onDblClick={(id) => handleDoubleClick(id)}
+    onMiddleClick={(id) => handleMiddleClick(id)}
+    onRightClick={(id) => handleRightClick(id)}
 >
-    <div class="size-32 bg-red-500" id="item-a">Item A</div>
+    <div className="h-32 w-32 bg-red-500" id="item-a">
+        Item A
+    </div>
 </Draggable>
 ```
 
@@ -30,12 +32,13 @@ This is an example page showing 2 draggable divs that can be dragged over each o
 
 They print their status into the console.
 
-```html
-<script lang="ts" setup>
-    import Draggable from '../../../../webview/src/components/Draggable.vue';
+```tsx
+import React from 'react';
+import Draggable from '../../../../webview/src/components/Draggable';
 
-    function handleDrag(from_id: string, to_id: string) {
-        console.log(`drag: `, from_id, to_id);
+export default function DraggableExample() {
+    function handleDrag(fromId: string, toId: string) {
+        console.log(`drag: `, fromId, toId);
     }
 
     function handleClick(id: string) {
@@ -53,28 +56,32 @@ They print their status into the console.
     function handleRightClick(id: string) {
         console.log('right-click: ', id);
     }
-</script>
 
-<template>
-    <div class="flex flex-row gap-2">
-        <Draggable
-            @onDrag="handleDrag"
-            @onLeftClick="handleClick"
-            @onDblClick="handleDoubleClick"
-            @onMiddleClick="handleMiddleClick"
-            @onRightClick="handleRightClick"
-        >
-            <div class="size-32 bg-red-500" id="item-a">Item A</div>
-        </Draggable>
-        <Draggable
-            @onDrag="handleDrag"
-            @onLeftClick="handleClick"
-            @onDblClick="handleDoubleClick"
-            @onMiddleClick="handleMiddleClick"
-            @onRightClick="handleRightClick"
-        >
-            <div class="size-32 bg-red-500" id="item-b">Item B</div>
-        </Draggable>
-    </div>
-</template>
+    return (
+        <div className="flex flex-row gap-2">
+            <Draggable
+                onDrag={handleDrag}
+                onLeftClick={handleClick}
+                onDblClick={handleDoubleClick}
+                onMiddleClick={handleMiddleClick}
+                onRightClick={handleRightClick}
+            >
+                <div className="h-32 w-32 bg-red-500" id="item-a">
+                    Item A
+                </div>
+            </Draggable>
+            <Draggable
+                onDrag={handleDrag}
+                onLeftClick={handleClick}
+                onDblClick={handleDoubleClick}
+                onMiddleClick={handleMiddleClick}
+                onRightClick={handleRightClick}
+            >
+                <div className="h-32 w-32 bg-red-500" id="item-b">
+                    Item B
+                </div>
+            </Draggable>
+        </div>
+    );
+}
 ```

@@ -20,16 +20,13 @@ const pluginNames = fs
 pluginNames.forEach((name) => {
     const astroPath = path.join(pagesDir, `${name}.astro`);
     const astroContent = `---
-import AppLayout from '../../components/AppLayout.tsx';
-import Draggable from '../../components/Draggable.tsx';
+import MinimalLayout from '../../components/MinimalLayout.tsx';
 import Page from '@Plugins/${name}/Page.tsx';
 export const prerender = true;
 ---
-<AppLayout>
-  <Draggable>
-    <Page client:load />
-  </Draggable>
-</AppLayout>`;
+<MinimalLayout>
+  <Page client:load />
+</MinimalLayout>`;
     fs.writeFileSync(astroPath, astroContent);
 });
 

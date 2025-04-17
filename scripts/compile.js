@@ -23,7 +23,7 @@ const initialCommands = [
     `node ./scripts/copyFiles.js`,
 ];
 
-const finalCommands = [`node ./scripts/buildPluginImports.js`, `node ./scripts/pathResolver.js`];
+const finalCommands = [`node ./scripts/buildPluginImports.js`];
 
 function formatTimestamp(time) {
     const date = new Date(time);
@@ -51,6 +51,10 @@ function execPromise(command) {
 }
 
 function copyResourceFile() {
+    // Ensure the directory exists before copying
+    if (!fs.existsSync('./resources/core')) {
+        fs.mkdirSync('./resources/core', { recursive: true });
+    }
     fs.cpSync(`./src/resource.toml`, `./resources/core/resource.toml`, { force: true });
 }
 
@@ -97,6 +101,13 @@ async function compile() {
         } catch (err) {}
     }
 
+    // Create necessary directories
+    for (let dir of ['./resources/core', './resources/webview']) {
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+    }
+
     createAssetPackTomls();
 
     if (!process.argv.includes('docker')) {
@@ -114,10 +125,31 @@ async function compile() {
         fs.cpSync(webviewBuildDir, webviewResDir, { recursive: true });
     }
 
+    // Ensure resource.toml is copied
     copyResourceFile(); // Copy resource file for core
+
+    // Verify the resource.toml file was copied successfully
+    if (!fs.existsSync('./resources/core/resource.toml')) {
+        logMessage(`Warning: resource.toml was not copied to resources/core, attempting again...`);
+        // Try one more time with a direct copy
+        fs.copyFileSync('./src/resource.toml', './resources/core/resource.toml');
+    }
+
     await runCommands(finalCommands); // Update file pathing
 
+    // Run path resolver separately with more detailed logging
+    logMessage('Running path resolver...');
+    try {
+        await execPromise('node ./scripts/pathResolver.js');
+        logMessage('Path resolver completed successfully');
+    } catch (error) {
+        logMessage(`Error running path resolver: ${error.message}`);
+    }
+
     logMessage(`Compile Time - ${Date.now() - start}ms`);
+
+    // Add a small delay to ensure file system operations complete
+    await new Promise((resolve) => setTimeout(resolve, 500));
 }
 
 compile();

@@ -51,12 +51,27 @@ function processReadyCallbacks() {
 export function useWebview(path = 'http://assets/webview/index.html') {
     let isInitialized = true;
 
+    // Handle webview initialization or reinitialization
     if (!webview) {
         isInitialized = false;
         webview = new alt.WebView(path);
         webview.unfocus();
         webview.on(Events.view.playFrontendSound, handleFrontendSound);
         alt.on('keyup', emitKeypress);
+    } else {
+        // If webview already exists, check if it needs to be reinitialized
+        // This helps with hot reloading
+        try {
+            // Test if webview is still valid
+            webview.isVisible;
+        } catch (err) {
+            // If an error occurs, the webview is no longer valid and needs to be recreated
+            alt.log('Reinitializing webview after hot reload');
+            isInitialized = false;
+            webview = new alt.WebView(path);
+            webview.unfocus();
+            webview.on(Events.view.playFrontendSound, handleFrontendSound);
+        }
     }
 
     /**
