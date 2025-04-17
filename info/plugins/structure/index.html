@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.798170534231">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.798174445926">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.7.0">
@@ -32,12 +32,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../../resources/css/retype.css?v=3.7.0.798170534231" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.7.0.798174445926" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.7.0.798170534231" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.7.0.798174445926" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.7.0.798170534231" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.7.0.798170534231" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.7.0.798174445926" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.7.0.798174445926" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -423,23 +423,23 @@ setBulk({
         <span>webview</span>
     </h2>
 </doc-anchor-target>
-<p>Webview pages should always have unique names that differentiate from other plugins. Ensure you give your <code v-pre>vue</code> file a unique name.</p>
+<p>Each plugin that needs a webview UI should include a <code v-pre>Page.tsx</code> React component. This component will be automatically imported by the generated Astro page.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-typescript"><code v-pre class="language-typescript">// MyPluginExample.vue
-&lt;script lang=&quot;ts&quot; setup&gt;
-import '../translate/index';
+<pre class="language-tsx"><code v-pre class="language-tsx">// Page.tsx
+import React from 'react';
 import { useTranslate } from '../../../main/shared/translate';
 
-const { t } = useTranslate('en');
+export default function Page() {
+    const { t } = useTranslate('en');
 
-console.log(`Hello from webview`);
-&lt;/script&gt;
+    console.log(`Hello from webview`);
 
-&lt;template&gt;
-    &lt;div&gt;
-        &lt;div class=&quot;text-red-500 text-lg&quot;&gt;{{ ERROR }}&lt;/div&gt;
-    &lt;/div&gt;
-&lt;/template&gt;</code></pre>
+    return (
+        &lt;div&gt;
+            &lt;div className=&quot;text-lg text-red-500&quot;&gt;{t('example.hello-from-webview')}&lt;/div&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="extending-built-in-interfaces">
     <h2>

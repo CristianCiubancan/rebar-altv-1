@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.798170534231">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.7.0.798174445926">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.7.0">
@@ -30,12 +30,12 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../../../resources/css/retype.css?v=3.7.0.798170534231" rel="stylesheet">
+    <link href="../../../../resources/css/retype.css?v=3.7.0.798174445926" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.7.0.798170534231" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../../resources/js/config.js?v=3.7.0.798174445926" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../../resources/js/retype.js?v=3.7.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.7.0.798170534231" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.7.0.798170534231" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../../resources/js/lunr.js?v=3.7.0.798174445926" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../../resources/js/prism.js?v=3.7.0.798174445926" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -196,14 +196,16 @@
 <p>The most important part of a draggable component is that it contains an <code v-pre>id</code>.</p>
 <p>This is what helps the draggable element decide what to send back.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-markup"><code v-pre class="language-markup">&lt;Draggable
-    @onDrag=&quot;handleDrag&quot;
-    @onLeftClick=&quot;handleClick&quot;
-    @onDblClick=&quot;handleDoubleClick&quot;
-    @onMiddleClick=&quot;handleMiddleClick&quot;
-    @onRightClick=&quot;handleRightClick&quot;
+<pre class="language-tsx"><code v-pre class="language-tsx">&lt;Draggable
+    onDrag={(fromId, toId) =&gt; handleDrag(fromId, toId)}
+    onLeftClick={(id) =&gt; handleClick(id)}
+    onDblClick={(id) =&gt; handleDoubleClick(id)}
+    onMiddleClick={(id) =&gt; handleMiddleClick(id)}
+    onRightClick={(id) =&gt; handleRightClick(id)}
 &gt;
-    &lt;div class=&quot;size-32 bg-red-500&quot; id=&quot;item-a&quot;&gt;Item A&lt;/div&gt;
+    &lt;div className=&quot;h-32 w-32 bg-red-500&quot; id=&quot;item-a&quot;&gt;
+        Item A
+    &lt;/div&gt;
 &lt;/Draggable&gt;</code></pre>
 </doc-codeblock></div>
 <div class="flex mb-6">
@@ -232,11 +234,12 @@
 <p>This is an example page showing 2 draggable divs that can be dragged over each other.</p>
 <p>They print their status into the console.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-markup"><code v-pre class="language-markup">&lt;script lang=&quot;ts&quot; setup&gt;
-    import Draggable from '../../../../webview/src/components/Draggable.vue';
+<pre class="language-tsx"><code v-pre class="language-tsx">import React from 'react';
+import Draggable from '../../../../webview/src/components/Draggable';
 
-    function handleDrag(from_id: string, to_id: string) {
-        console.log(`drag: `, from_id, to_id);
+export default function DraggableExample() {
+    function handleDrag(fromId: string, toId: string) {
+        console.log(`drag: `, fromId, toId);
     }
 
     function handleClick(id: string) {
@@ -254,30 +257,34 @@
     function handleRightClick(id: string) {
         console.log('right-click: ', id);
     }
-&lt;/script&gt;
 
-&lt;template&gt;
-    &lt;div class=&quot;flex flex-row gap-2&quot;&gt;
-        &lt;Draggable
-            @onDrag=&quot;handleDrag&quot;
-            @onLeftClick=&quot;handleClick&quot;
-            @onDblClick=&quot;handleDoubleClick&quot;
-            @onMiddleClick=&quot;handleMiddleClick&quot;
-            @onRightClick=&quot;handleRightClick&quot;
-        &gt;
-            &lt;div class=&quot;size-32 bg-red-500&quot; id=&quot;item-a&quot;&gt;Item A&lt;/div&gt;
-        &lt;/Draggable&gt;
-        &lt;Draggable
-            @onDrag=&quot;handleDrag&quot;
-            @onLeftClick=&quot;handleClick&quot;
-            @onDblClick=&quot;handleDoubleClick&quot;
-            @onMiddleClick=&quot;handleMiddleClick&quot;
-            @onRightClick=&quot;handleRightClick&quot;
-        &gt;
-            &lt;div class=&quot;size-32 bg-red-500&quot; id=&quot;item-b&quot;&gt;Item B&lt;/div&gt;
-        &lt;/Draggable&gt;
-    &lt;/div&gt;
-&lt;/template&gt;</code></pre>
+    return (
+        &lt;div className=&quot;flex flex-row gap-2&quot;&gt;
+            &lt;Draggable
+                onDrag={handleDrag}
+                onLeftClick={handleClick}
+                onDblClick={handleDoubleClick}
+                onMiddleClick={handleMiddleClick}
+                onRightClick={handleRightClick}
+            &gt;
+                &lt;div className=&quot;h-32 w-32 bg-red-500&quot; id=&quot;item-a&quot;&gt;
+                    Item A
+                &lt;/div&gt;
+            &lt;/Draggable&gt;
+            &lt;Draggable
+                onDrag={handleDrag}
+                onLeftClick={handleClick}
+                onDblClick={handleDoubleClick}
+                onMiddleClick={handleMiddleClick}
+                onRightClick={handleRightClick}
+            &gt;
+                &lt;div className=&quot;h-32 w-32 bg-red-500&quot; id=&quot;item-b&quot;&gt;
+                    Item B
+                &lt;/div&gt;
+            &lt;/Draggable&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
 </doc-codeblock></div>
 
                                 
