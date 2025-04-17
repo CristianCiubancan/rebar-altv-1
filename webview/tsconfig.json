@@ -1,0 +1,11 @@
+{
+    "extends": "./tsconfig.node.json",
+    "compilerOptions": {
+        "baseUrl": "./",
+        "jsx": "react-jsx",
+        "jsxImportSource": "react",
+        "allowJs": false,
+        "strict": true
+    },
+    "include": ["src/**/*", "components/**/*", "composables/**/*"]
+}

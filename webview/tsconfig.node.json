@@ -15,5 +15,5 @@
             "@Components/*": ["../webview/components/*"]
         }
     },
-    "include": ["astro.config.mjs", "src/**/*.ts", "src/**/*.d.ts"]
+    "include": ["astro.config.mjs", "src/**/*", "src/**/*.d.ts", "components/**/*", "composables/**/*"]
 }

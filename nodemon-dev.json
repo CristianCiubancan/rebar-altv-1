@@ -1,7 +1,7 @@
 {
     "verbose": false,
-    "ext": "ts,tsx,astro",
-    "watch": ["./src", "./webview"],
+    "ext": "ts,tsx,astro,js,cjs",
+    "watch": ["./src", "./webview", "./scripts"],
     "ignore": [
         "webview/pages/*",
         "webview/vite.config.*",
@@ -9,7 +9,11 @@
         "*.mjs",
         "ignore*.ts",
         "autogen*.ts",
-        "src/scratchpad"
+        "src/scratchpad",
+        "webview/dist/*",
+        "webview/dist",
+        "webview/src/pages/plugins/**",
+        "webview/src/data/**"
     ],
     "events": {
         "restart": "node ./scripts/restart.js"

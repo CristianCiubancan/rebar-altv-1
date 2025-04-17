@@ -1,2 +1,2 @@
-type = 'asset-pack'
-client-files = [ '*' ]
+type = "asset-pack"
+client-files = ["*"]
